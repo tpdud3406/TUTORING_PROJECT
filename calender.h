@@ -4,6 +4,14 @@
  * calender.c에 구현될 함수들의 원형(proto type)은 현재 파일에 선언
  * 구조체 및 DEFINE 메크로도 현재 파일에 선언
  * ************************************************/
+
+struct Calender {
+    int year;
+    int month;
+    int day;
+    char *str;
+} cal;
+
 void calender(void);
 void input_schedule(void);
 void delete_schedule(void);
