@@ -5,3 +5,6 @@
  * 구조체 및 DEFINE 메크로도 현재 파일에 선언
  * ************************************************/
 void calender(void);
+void input_schedule(void);
+void delete_schedule(void);
+void view_schedule(void);
