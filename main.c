@@ -8,5 +8,6 @@
 int main(){
     //calc();
     calender();
+    printf("수정\n");
     return 0;
 }
