@@ -25,10 +25,10 @@ void calender(){
             case 1:
                 input_schedule();
                 break;
-            /*
             case 2:
                 delete_schedule();
                 break;
+            /*    
             case 3:
                 view_schedule();
                 break;
@@ -68,7 +68,7 @@ void input_schedule(void) {
             ch_cnt++;
             printf("일정을 추가하였습니다.\n");
         }
-        else { // 일정 추가
+        else { // 일정 추가 X
             printf("일정이 있습니다.\n");
         }
     }
@@ -83,8 +83,6 @@ void input_schedule(void) {
     printf("아무 키나 입력하세요...\n");
 
     getchar();
-    //system("clear");
-
     return;
 }
 
@@ -101,29 +99,42 @@ int schedule_bool(void){
     }
 }
 
-/***************** 일정 삭제 함수 ********************/
+/***************** 일정 삭제 Main 함수 ********************/
 /* 일정이 있을 경우 해당 일정 삭제, 일정이 없을 경우 일정이 없다고 출력*/
 // 해당 일정만 삭제 해야함. 
-/*
+
 void delete_schedule(void) {
-    int year, month, day; // 입력 받을 년,월,일 
-    char str[10]; // 스케줄 입력
+    Calender input; 
     printf("입력: ");
-    scanf(" %d %d %d %s", &year, &month, &day, str);
-    if (cal[day - 1] == NULL) { // 일정이 없다면
-        printf("%d 년 %d 월 %d 일에 일정이 없습니다.\n", year, month, day);
-    }
-    else { // 일정이 있다면
-        printf("%d 년 %d 월 %d 일에 일정이 있습니다.\n", year, month, day);
-        *cal[day - 1] = NULL;
+    scanf(" %d %d %d %s", &input.year, &input.month, &input.day, input.content);
+    if (schedule_bool()) { // 일정이 있다면
+        printf("%d 년 %d 월 %d 일에 일정이 있습니다.\n", input.year, input.month, input.day);
+        // 해당 일정 삭제 
+        schedule_sub_delete(input);
         printf("일정을 삭제하였습니다.\n");
     }
-    printf("아무 키나 입력하세요...");
+    else { // 일정이 없다면
+        printf("%d 년 %d 월 %d 일에 일정이 없습니다.\n", input.year, input.month, input.day);
+    }
+    printf("아무 키나 입력하세요...\n");
     getchar();
-    system("clear");
     return;
 }
-*/
+/********** 해당 일정 삭제 Sub 함수 *********/
+// 일정이 있으면 삭제
+void schedule_sub_delete(Calender input){
+    for(int i = 0; i < ch_cnt; i++){
+        // 해당 일정이 있다면 삭제
+        if(cal[i].year==input.year && cal[i].month == input.month && cal[i].day == input.day){ 
+            cal[i].year = 0;
+            cal[i].month = 0;
+            cal[i].day = 0;
+            //strcpy(cal[i].content, NULL);  오류 발생 !!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+        return;
+    }
+    return ;
+}
 
 /***************** 일정 출력 함수 ********************/
 //void view_schedule(void);
