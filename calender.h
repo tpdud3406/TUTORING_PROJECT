@@ -5,14 +5,15 @@
  * 구조체 및 DEFINE 메크로도 현재 파일에 선언
  * ************************************************/
 
-struct Calender {
+typedef struct Calender {
     int year;
     int month;
     int day;
-    char *str;
-} cal;
+    char content[100];
+} Calender;
 
 void calender(void);
 void input_schedule(void);
 void delete_schedule(void);
 void view_schedule(void);
+int schedule_bool(void);
