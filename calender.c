@@ -28,12 +28,10 @@ void calender(){
                 break;
             case 2:
                 delete_schedule();
-                break;
-            /*    
+                break;   
             case 3:
                 view_schedule();
                 break;
-            */
             case 4:
                 system("clear");
                 break;
@@ -140,27 +138,85 @@ void schedule_sub_delete(Calender input){
 }
 
 /***************** 일정 출력 함수 ********************/
-/*
+
 void view_schedule(void){
+    int d[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+    int count = 0;
     for(int i = 0; i <MAX_INDEX; i++){
         // 빠른 스케줄부터 보여주기
         if(cal[i].year != 0 && cal[i].month != 0 && cal[i].day != 0) {
-            ;
+            if(year_check(i)){ // 윤년이라면
+                d[1] = 29;
+                int first_dates = ((cal[i].year * 365) + (cal[i].year)/4 - ((cal[i].year-1)/100)+ ((cal[i].year-1)/400)) % 7; // 해당 년 1월 1일 index
+                for(int j = 0; j < cal[i].month - 1; j++){
+                    first_dates += d[j];
+                }
+                first_dates = first_dates % 7; // 해당 달의 1일 index 
+                int dates = (first_dates + (cal[i].day - 1)) % 7; // 해당 일 index
+                printf("\t\t\t%d월\n",cal[i].month);
+                
+                printf("일\t월\t화\t수\t목\t금\t토\n"); 
+                for(int j = 0; j < first_dates; j++){
+                    printf("\t");
+                    count++;
+                }
+                // 일정도 출력! 
+                for(int j = 1; j <= d[cal[i].month - 1]; j++){
+                    if(count == 7){
+                        printf("\n");
+                        count = 0;
+                    }
+                    printf("%d\t", j);
+                    /*
+                    if(j == cal[i].day){
+                        for(int k = 0; k < dates; k++)
+                            printf("\t");
+                        printf("\n%s\n", cal[i].content);
+                    }
+                    */
+                    count++;
+                } 
+                printf("\n");   
+            }
+            else{ // 윤년이 아니라면
+                int first_dates = ((cal[i].year * 365) + (cal[i].year)/4 - ((cal[i].year-1)/100)+ ((cal[i].year-1)/400)) % 7; // 해당 년 1월 1일 index
+                for(int j = 0; j < cal[i].month - 1; j++){
+                    first_dates += d[j];
+                }
+                first_dates = first_dates % 7; // 해당 달의 1일 index 
+                int dates = (first_dates + (cal[i].day - 1)) % 7; // 해당 일 index
+                printf("\t\t\t%d월\n",cal[i].month);
+
+                printf("일\t월\t화\t수\t목\t금\t토\n"); 
+                for(int j = 0; j < first_dates; j++){
+                    printf("\t");
+                    count++;
+                }
+                // 일정도 출력! 
+                for(int j = 1; j <= d[cal[i].month - 1]; j++){
+                    if(count == 7){
+                        printf("\n");
+                        count = 0;
+                    }
+                    printf("%d\t", j);
+                    /*
+                    if(j == cal[i].day){
+                        for(int k = 0; k < dates; k++)
+                            printf("\t");
+                        printf("\n%s\n", cal[i].content);
+                    }
+                    */
+                    count++;
+                } 
+                printf("\n");   
+            }
         }
     }
     return;
 }
-*/
+
 /***************** 윤년 check 함수 ********************/
 int year_check(int n){
     if((cal[n].year % 4 == 0) && (cal[n].year % 100 != 0) && (cal[n].year % 400 == 0)) return 1;
-    else return 0;
-}
-
-
-/***************** 31일인 Month check 함수 ********************/
-int month_check(int n){
-    if(cal[n].month == 1 || cal[n].month == 3 || cal[n].month == 5 || cal[n].month == 7 || cal[n].month == 8 || cal[n].month == 10 || cal[n].month == 12)
-        return 1;
     else return 0;
 }

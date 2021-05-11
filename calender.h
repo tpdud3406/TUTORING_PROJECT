@@ -18,3 +18,4 @@ void delete_schedule(void);
 void view_schedule(void);
 int schedule_bool(void);
 void schedule_sub_delete(Calender input);
+int year_check(int i);
