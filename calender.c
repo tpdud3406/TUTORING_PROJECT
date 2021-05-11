@@ -5,7 +5,6 @@
 //스케줄 관리 프로그램의 작동 로직은 calender.c에서 구현한다.
 
 Calender cal[MAX_INDEX]; 
-
 int ch_cnt = 0;
 
 /************** 일정 관리 실행 함수 *****************/
@@ -98,12 +97,9 @@ void input_schedule(void) {
 // 일정이 있으면 1 출력, 없으면 0 출력
 int schedule_bool(void){
     for(int i = 0; i < MAX_INDEX; i++){
-        if(cal[i].year==0 && cal[i].month == 0 && cal[i].day == 0){ // 일정이 없으면 (cal[i].content == NULL 보다는 있는 값으로 조건문하는게 최선)
-            return 0;
-        }
-        else {
-            return 1;
-        }
+        // 일정이 없으면 (cal[i].content == NULL 보다는 있는 값으로 조건문하는게 최선)
+        if(cal[i].year==0 && cal[i].month == 0 && cal[i].day == 0) return 0;
+        else return 1;
     }
 }
 
@@ -117,8 +113,7 @@ void delete_schedule(void) {
     scanf(" %d %d %d %s", &input.year, &input.month, &input.day, input.content);
     if (schedule_bool()) { // 일정이 있다면
         printf("%d 년 %d 월 %d 일에 일정이 있습니다.\n", input.year, input.month, input.day);
-        // 해당 일정 삭제 
-        schedule_sub_delete(input);
+        schedule_sub_delete(input); // 해당 일정 삭제 
         printf("일정을 삭제하였습니다.\n");
     }
     else { // 일정이 없다면
@@ -145,4 +140,27 @@ void schedule_sub_delete(Calender input){
 }
 
 /***************** 일정 출력 함수 ********************/
-//void view_schedule(void);
+/*
+void view_schedule(void){
+    for(int i = 0; i <MAX_INDEX; i++){
+        // 빠른 스케줄부터 보여주기
+        if(cal[i].year != 0 && cal[i].month != 0 && cal[i].day != 0) {
+            ;
+        }
+    }
+    return;
+}
+*/
+/***************** 윤년 check 함수 ********************/
+int year_check(int n){
+    if((cal[n].year % 4 == 0) && (cal[n].year % 100 != 0) && (cal[n].year % 400 == 0)) return 1;
+    else return 0;
+}
+
+
+/***************** 31일인 Month check 함수 ********************/
+int month_check(int n){
+    if(cal[n].month == 1 || cal[n].month == 3 || cal[n].month == 5 || cal[n].month == 7 || cal[n].month == 8 || cal[n].month == 10 || cal[n].month == 12)
+        return 1;
+    else return 0;
+}
