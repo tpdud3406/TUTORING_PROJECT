@@ -1,9 +1,11 @@
 #include "calender.h"
 #include <stdlib.h> // 메모리 할당 (malloc, free), sleep
 #include <string.h> // strcmp, strcat
+#define MAX_INDEX 400
 //스케줄 관리 프로그램의 작동 로직은 calender.c에서 구현한다.
 
-Calender cal[100]; 
+Calender cal[MAX_INDEX]; 
+
 int ch_cnt = 0;
 
 /************** 일정 관리 실행 함수 *****************/
@@ -65,11 +67,17 @@ void input_schedule(void) {
             cal[ch_cnt].month = input.month;
             cal[ch_cnt].day = input.day;
             strcpy(cal[ch_cnt].content, input.content);
-            ch_cnt++;
+            ch_cnt += 4;
             printf("일정을 추가하였습니다.\n");
         }
-        else { // 일정 추가 X
-            printf("일정이 있습니다.\n");
+        else { // 일정 추가 
+            ch_cnt++;
+            cal[ch_cnt].year = input.year;
+            cal[ch_cnt].month = input.month;
+            cal[ch_cnt].day = input.day;
+            strcpy(cal[ch_cnt].content, input.content);
+            ch_cnt--;    
+            printf("일정을 추가하였습니다.\n");
         }
     }
     else { // 일정이 없으면
@@ -77,7 +85,7 @@ void input_schedule(void) {
         cal[ch_cnt].month = input.month;
         cal[ch_cnt].day = input.day;
         strcpy(cal[ch_cnt].content, input.content);
-        ch_cnt++;
+        ch_cnt += 4;
         printf("일정을 추가하였습니다.\n");
     }
     printf("아무 키나 입력하세요...\n");
@@ -89,7 +97,7 @@ void input_schedule(void) {
 /********** 일정이 있는지 없는지 확인하는 함수 *********/
 // 일정이 있으면 1 출력, 없으면 0 출력
 int schedule_bool(void){
-    for(int i = 0; i < ch_cnt; i++){
+    for(int i = 0; i < MAX_INDEX; i++){
         if(cal[i].year==0 && cal[i].month == 0 && cal[i].day == 0){ // 일정이 없으면 (cal[i].content == NULL 보다는 있는 값으로 조건문하는게 최선)
             return 0;
         }
@@ -123,15 +131,15 @@ void delete_schedule(void) {
 /********** 해당 일정 삭제 Sub 함수 *********/
 // 일정이 있으면 삭제
 void schedule_sub_delete(Calender input){
-    for(int i = 0; i < ch_cnt; i++){
+    for(int i = 0; i < MAX_INDEX; i++){
         // 해당 일정이 있다면 삭제
-        if(cal[i].year==input.year && cal[i].month == input.month && cal[i].day == input.day){ 
+        if(strcmp(cal[i].content, input.content) == 0){ 
             cal[i].year = 0;
             cal[i].month = 0;
             cal[i].day = 0;
             //strcpy(cal[i].content, NULL);  오류 발생 !!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return;
         }
-        return;
     }
     return ;
 }
