@@ -6,34 +6,29 @@
  * ************************************************/
 
 /**************** LinkedList ***************/
-typedef struct{
+typedef struct Node{
     int year;
     int month;
     int day;
     char content[100];
-    Node *next;
+    struct Node *next;
 } Node;
 
+typedef struct LinkedList {
+    Node *head;
+} LinkedList;
+
 //날짜순으로
-void Append(Node *head, int year, int month, int day, char content[]); // list의 마지막에 새로운 data에 대한 Node 추가
-void Delete(Node * head, int year, int month, int day, char content[]); // list의 처음에 새로운 data에 대한 Node 추가
-int Length(Node *head); // list에 있는 Node의 수를 return
+void Append_Node(LinkedList *p, Node *newNode); // list의 마지막에 새로운 data에 대한 Node 추가
+void Delete_Node(LinkedList *p, Node *newNode); // 노드 삭제
 void Print(Node *head); // 앞에서부터 출력
 
 
 /*************** 달력 프로그램 **************/
-/*
-typedef struct Calender {
-    int year;
-    int month;
-    int day;
-    char content[100];
-} Calender;
-*/
 void calender(void);
-void input_schedule(void);
-void delete_schedule(void);
+void input_schedule(LinkedList *p);
+void delete_schedule(LinkedList *p);
 void view_schedule(void);
-int schedule_bool(Node *input);
-void schedule_sub_delete(Node *input);
+int schedule_day_check(LinkedList *p, Node *newNode);
+int schedule_content_check(LinkedList *p, Node *newNode);
 int year_check(int i);
