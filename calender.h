@@ -12,23 +12,19 @@ typedef struct Node{
     int day;
     char content[100];
     struct Node *next;
+    struct Node *prev;
 } Node;
 
-typedef struct LinkedList {
-    Node *head;
-} LinkedList;
 
 //날짜순으로
-void Append_Node(LinkedList *p, Node *newNode); // list의 마지막에 새로운 data에 대한 Node 추가
-void Delete_Node(LinkedList *p, Node *newNode); // 노드 삭제
-void Print(Node *head); // 앞에서부터 출력
-
+void Append_Node(Node *newNode); // list의 마지막에 새로운 data에 대한 Node 추가
+void Delete_Node(Node *newNode); // 노드 삭제
+void Print(void); // 앞에서부터 출력
 
 /*************** 달력 프로그램 **************/
 void calender(void);
-void input_schedule(LinkedList *p);
-void delete_schedule(LinkedList *p);
-void view_schedule(void);
-int schedule_day_check(LinkedList *p, Node *newNode);
-int schedule_content_check(LinkedList *p, Node *newNode);
+void input_schedule(void);
+void delete_schedule(void);
+int schedule_day_check(Node *newNode);
+int schedule_content_check( Node *newNode);
 int year_check(int i);
