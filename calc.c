@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include<string.h>
+#include "calc.h"
 
 //공학용 계산기의 작동 로직은 calc.c에서 구현한다.
 int top=-1;
@@ -27,9 +25,10 @@ void input()
 
       if(strchr(input, '=')==NULL){
          char *transformed = malloc(sizeof(char)*100);
-         char *postfix = malloc(sizeof(char)*100);
+         char *postfixed = malloc(sizeof(char)*100);
          transformed=transformation(input);
-         postfix=postfix(transformed);
+         postfixed=postfix(transformed);
+         calculate(postfixed);
          break;
       }else{
          char *ptr = strtok(input,"=");
@@ -148,6 +147,49 @@ char * postfix(char * transformed)
    }
 
    return postfix;
+}
+void calculate(char *postfixed)
+{
+   //printf("%s\n", postfixed);
+   char *ptr = strtok(postfixed, " ");      // " " 공백 문자를 기준으로 문자열을 자름, 포인터 반환
+
+   while(ptr != NULL){
+      if(ptr[0] >= '0' && ptr[0] <= '9'){
+         int num=0;
+         do{
+            num=num*10+(*ptr)-'0';
+            ptr++;
+         }while(*ptr>='0'&&*ptr<='9');
+
+         calPush(num);
+      
+      }
+      else{
+         double num1=calPop();
+         double num2=calPop();
+         
+         switch(ptr[0]){
+            case '*':
+               calPush(num2*num1);
+               printf("check : %.2f\n", num2*num1);
+               break;
+            case '/':
+               calPush(num2/num1);
+               printf("check : %.2f\n", num2/num1);
+               break;
+            case '+':
+               calPush(num2+num1);
+               printf("check : %.2f \n", num2+num1);
+               break;
+            case '-':
+               calPush(num2-num1);
+               printf("check : %.2f\n", num2-num1);
+               break;
+         }
+      }
+      ptr = strtok(NULL, " ");
+   }
+   printf("result : %f\n",calPop());
 }
 char peek(){
    if(!isEmpty()){
