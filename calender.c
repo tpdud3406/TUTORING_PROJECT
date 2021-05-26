@@ -227,6 +227,10 @@ void Delete_Node(Node *newNode){
     cur = head;
 
     while(cur != NULL){
+        if(newNode->year == cur->next->year && newNode->month == cur->next->month && newNode->day == cur->next->day){
+            cur->next = cur->next->next;
+            break;
+        }
         cur = cur->next;
     }
     return;
