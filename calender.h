@@ -20,6 +20,7 @@ typedef struct Node{
 void Append_Node(Node *newNode); // list의 마지막에 새로운 data에 대한 Node 추가
 void Delete_Node(Node *newNode); // 노드 삭제
 void Print(void); // 앞에서부터 출력
+int total_days(Node *newNode, Node *cur);
 
 /*************** 달력 프로그램 **************/
 void calender(void);

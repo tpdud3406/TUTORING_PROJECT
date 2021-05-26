@@ -164,118 +164,69 @@ void Append_Node(Node *newNode){
     // 처음 삽입되는 노드라면 (더미노드 없기때문에 조건 달리 지정)
     if(head ==  NULL){
         head = newNode;
-    }
-    else { // 처음 삽입되는 노드가 아니라면
+        return;
+    } else if (total_days(newNode, head)){
+       newNode->next = head;
+       head = newNode;
+       return;
+    } else {
         Node *cur;
         cur = head;
 
-        // 정렬하면서 연결
         while(cur != NULL){
-            printf("is checking now\n");
-            printf("cur : %d %d %d %s\n", cur->year, cur->month, cur->day, cur->content);
-            // 년도 비교    
-            // ok
-            if(newNode->year < cur->year){ // 헤더보다 더 앞 순위라면 (예: 헤더 - 2015, newNode - 2014)
-                printf("in if\n");
-                newNode->next = cur;
-                cur->prev = newNode;
-                head = newNode;
-                break;
-            }
-            else if( newNode -> year == cur -> year ){ // 노드 내에 20150312(head) - 20160312(cur) - 20160412(newNode) - 20170312 넣는 식
-                printf("in else if\n");
-                if (newNode->month > cur->month) { // 모든 노드 들보다 newNode의 month가 가장 크다면, 현재 cur가 NULL을 가리키고 있는 상태
-                    if(cur->next == NULL){
-                        printf("in else\n");
-                        printf("마지막 노드\n");
-                        newNode->prev = cur;
-                        cur->next = newNode;
-                        break;
-                    }
-                    else if (newNode->month > cur->month && newNode->month < cur->next->month) { // 예: cur - 2월, cur->next - 4월, newNode - 3월 오류 뜸 !!!!!!!!!!!!
-                        printf("in if\n");
-                        newNode->prev = cur;
-                        cur->next = newNode;
-                        newNode->next = cur->next;
-                        cur->next->prev = newNode;
-                        break;
-                    }
-                }                   
-                else if ( newNode -> month <= cur -> month ) { // 예: cur - 3월, cur->next - 3월, newNode - 3월 or cur - 3월, cur->next - 4월, newNode - 3월
-                    printf("in else if 111\n");
-                     // 예: newNode - 03.13 cur->next - 03.16
-                    if(newNode->month == cur->month && newNode->day <= cur->day){ // newNode->day <= cur->day
-                        printf("in if 1111\n");
-                        cur->next = newNode;
-                        newNode->prev = cur;
-                        break;
-                    }
-                    else if(newNode->month == cur->month && newNode->day > cur->day){
-                        printf("in else if 11111\n");
-                        if(cur->next != NULL){
-                            printf("in else if 1111111\n");
-                            cur->next = newNode;
-                            newNode->prev = cur;
-                            cur->next->prev = newNode;
-                            newNode->next = cur->next;
-                        }
-                        else{
-                            printf("in else if 1111111\n");
-                            cur->next = newNode;
-                            newNode->prev = cur;
-                        }
-                        break;
-                    }
-                    else{ // ok
-                        printf("in else 111111\n");
-                        newNode->prev = cur-> prev;
-                        newNode -> next = cur;
-                        if(cur->prev != NULL){
-                            cur->prev->next = newNode;
-                            cur->prev = newNode;
-                        } else head = newNode;
-                        break;
-                    }
-                } 
-                else if(newNode->month == cur->month){ // month가 같은 경우 
-                    printf("in else if 1111\n");
-                    if(newNode->day <= cur->day){ // newNode->day <= cur->day
-                        cur->next = newNode;
-                        newNode->prev = cur;
-                        break;
-                    } 
-                    else { // newNode->day > cur->day
-                        cur->prev = newNode;
-                        newNode->next = cur;
-                        break;
-                    } 
-
-                }
-            }
-            else { // 기존 노드들 보다 newNode의 year가 더 큰 경우 // ok
-                if(cur->next == NULL){
+            if(cur->next == NULL){
+                    printf("append last\n");
                     cur->next = newNode;
-                    cur = newNode->prev;
                     break;
-                }
             }
+            if(total_days(newNode, cur->next)){ // newNode가 cur->next보다 크다면
+                printf("append middle\n");
+                newNode->next = cur->next;
+                cur->next = newNode;
+                break;
+            } 
             cur = cur->next;
         }
     }
+    
     return;
 } 
+
+int total_days(Node *newNode, Node *cur){
+    int months[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    long total_cur = 0L, total_newNode = 0L;
+    
+    total_cur = (cur->year - 1) * 365L + (cur->year - 1) / 4 - (cur->year - 1) / 100 + (cur->year - 1) / 400;
+    total_newNode = (newNode->year - 1) * 365L + (newNode->year - 1) / 4 - (newNode->year - 1) / 100 + (cur->year - 1) / 400;
+    
+    // cur total일 수 구하기
+    if (!(cur->year % 4) && cur->year % 100 || !(cur->year % 400)) // 윤년 구하기
+        months[1]++;
+
+    for (int i = 0; i < cur->month - 1; i++)
+        total_cur += months[i];
+    total_cur += cur->day;
+
+    months[1]--;
+
+    // newNode total일 수 구하기
+    if (!(newNode->year % 4) && newNode->year % 100 || !(newNode->year % 400)) 
+        months[1]++;
+
+    for (int i = 0; i < newNode->month - 1; i++)
+        total_newNode += months[i];
+    total_newNode += newNode->day;
+
+    return total_newNode < total_cur;
+}
+
 
 /************** Node 삭제 *********************/
 void Delete_Node(Node *newNode){
     Node *cur; 
     cur = head;
 
-    while(cur->next != NULL){
-        // 노드를 찾으면
-        if((cur->year == newNode->year) &&(cur->month == newNode->month) &&(cur->day == newNode->day) && (strcmp(cur->next->content, newNode->content) == 0)){ 
-            cur->next = cur->next->next;
-            return;
-        }
+    while(cur != NULL){
         cur = cur->next;
     }
     return;
