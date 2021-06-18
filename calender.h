@@ -12,7 +12,6 @@ typedef struct Node{
     int day;
     char content[100];
     struct Node *next;
-    struct Node *prev;
 } Node;
 
 
