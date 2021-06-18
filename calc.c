@@ -1,6 +1,7 @@
 #include "calc.h"
 
 //공학용 계산기의 작동 로직은 calc.c에서 구현한다.
+
 int top=-1;
 char stack[100]={};
 int alphabet[26]={0, };
@@ -221,4 +222,3 @@ void deleteSpace(char * input)
          input[len-1] = '\0';
       }
    }
-}
