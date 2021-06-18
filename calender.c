@@ -69,6 +69,7 @@ void input_schedule(void){
         // 비교한 두 문자가 같으면 0 반환 -> else(일정 추가), 다르면 1 반환 -> if(덮어 쓰기)
         if (strcmp(n, str1)){ // 덮어 쓰기
             Delete_Node(newNode);
+            printf("in iff\n");
             Append_Node(newNode);
             printf("일정을 추가하였습니다.\n");
         }
@@ -91,7 +92,7 @@ void input_schedule(void){
     }
 }
 
-/********** 해당일에 일정이 있는지 없는지 확인하는 함수(1) - 날짜만 확인 *********/
+/************* 해당일에 일정이 있는지 없는지 확인하는 함수(1) - 날짜만 확인 *********/
 // 일정이 있으면 1 출력, 없으면 0 출력
 int schedule_day_check(Node *newNode){
     Node *cur;
@@ -104,7 +105,7 @@ int schedule_day_check(Node *newNode){
     return 0;
 }
 
-/********** 해당일에 일정이 있는지 없는지 확인하는 함수(2) - 날짜 && 내용 확인 *********/
+/*************** 해당일에 일정이 있는지 없는지 확인하는 함수(2) - 날짜 && 내용 확인 *********/
 // 일정이 있으면 1 출력, 없으면 0 출력
 int schedule_content_check(Node *newNode){
     Node *cur;
@@ -117,7 +118,7 @@ int schedule_content_check(Node *newNode){
     return 0;
 }
 
-/***************** 일정 삭제 Main 함수 ********************/
+/************************* 일정 삭제 Main 함수 ***************************/
 /* 일정이 있을 경우 해당 일정 삭제, 일정이 없을 경우 일정이 없다고 출력*/
 // 해당 일정만 삭제 해야함. 
 void delete_schedule(void){
@@ -129,7 +130,7 @@ void delete_schedule(void){
     scanf(" %d %d %d %s", &newNode->year, &newNode->month, &newNode->day, newNode->content);
     
     // 일정이 있으면 해당 일정 삭제
-    while(cur->next != NULL){
+    while(cur != NULL){
         if(schedule_content_check(newNode)){ 
             printf("%d 년 %d 월 %d 일에 일정이 있습니다.\n", newNode->year, newNode->month, newNode->day);
             Delete_Node(newNode);
@@ -175,12 +176,10 @@ void Append_Node(Node *newNode){
 
         while(cur != NULL){
             if(cur->next == NULL){
-                    printf("append last\n");
-                    cur->next = newNode;
-                    break;
+                cur->next = newNode;
+                break;
             }
             if(total_days(newNode, cur->next)){ // newNode가 cur->next보다 크다면
-                printf("append middle\n");
                 newNode->next = cur->next;
                 cur->next = newNode;
                 break;
@@ -191,7 +190,7 @@ void Append_Node(Node *newNode){
     
     return;
 } 
-
+/*************************** 날짜 계산 함수 ********************************/
 int total_days(Node *newNode, Node *cur){
     int months[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
     long total_cur = 0L, total_newNode = 0L;
@@ -221,23 +220,45 @@ int total_days(Node *newNode, Node *cur){
 }
 
 
-/************** Node 삭제 *********************/
+/******************** Node 삭제 ***********************/
+/*
 void Delete_Node(Node *newNode){
-    Node *cur; 
-    cur = head;
-
-    while(cur != NULL){
-        if(newNode->year == cur->next->year && newNode->month == cur->next->month && newNode->day == cur->next->day){
-            cur->next = cur->next->next;
-            break;
+    if (newNode == head){ // head delete
+        if(head->next != NULL){ // head next가 존재한다면
+            newNode = head->next; 
+            head = newNode;
+            return;
         }
-        cur = cur->next;
+        else{ 
+            head = NULL;
+            return;
+        }
+    } else { // 중간 노드 delete or 마지막 노드 delete
+        Node *cur;
+        cur = head;
+
+        while(cur != NULL){
+            printf("in while\n");
+            if(cur->year == newNode->year && cur->month == newNode->month && cur->day == newNode->day && strcmp(cur->content, newNode->content) == 0){
+                printf("in if \n");
+                if(cur->next != NULL){ // 중간 노드 delete
+                    cur = cur->next;
+                    break;
+                }
+                else{ // 마지막 노드 delete
+                    cur = NULL;
+                    break;    
+                }
+            } 
+            cur = cur->next;
+        }
     }
     return;
 }
+*/
 
-/**** List에 있는 모든 Node를 head부터 순서대로 출력
-ex) 4,3,5 => "4 3 5"  ****/
+/******** List에 있는 모든 Node를 head부터 순서대로 출력
+ex) 4,3,5 => "4 3 5"  *******/
 
 void Print(void){
     Node *cur;
