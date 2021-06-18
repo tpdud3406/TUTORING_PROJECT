@@ -96,7 +96,7 @@ char * postfix(char * transformed)
          sprintf(postfix+pi, "%d", num);   //num을 배열에 저장
          pi=pi+pj;
          postfix[pi++]=' ';   //num뒤에 공백 추가
-         printf("postfix notaion : %s\n",postfix);   //postfix notaion 출력
+         printf("postfix notation : %s\n",postfix);   //postfix notaion 출력
          --curr;
       }
       else if(ch == '+'||ch == '-'||ch == '*'||ch == '/'){   //연산자일때
@@ -114,7 +114,7 @@ char * postfix(char * transformed)
                   else{   //ch의 우선순위가 top보다 높을 때까지 pop
                      postfix[pi++]=pop();   //pop한 연산자를 postfixed에 저장
                      postfix[pi++]=' ';   //공백추가
-                     printf("postfix nontaion : %s\n",postfix);   //출력
+                     printf("postfix notation : %s\n",postfix);   //출력
                      --curr;
                      }
                   break;
@@ -124,7 +124,7 @@ char * postfix(char * transformed)
                   else{   //ch의 우선순위가 top보다 높을 때까지 pop
                      postfix[pi++]=pop();   //pop한 연산자를 postfixed에 저장
                      postfix[pi++]=' ';   //공백추가
-                     printf("postfix nontaion : %s\n",postfix);   //출력
+                     printf("postfix notation : %s\n",postfix);   //출력
                      --curr;
                      }
             }
@@ -133,7 +133,7 @@ char * postfix(char * transformed)
             while(peek()!='('){
                postfix[pi++]=pop();   //왼쪽괄호가 나올때까지 연산자를 postfixed에 저장하고 출력
                postfix[pi++]=' ';
-               printf("postfix nontaion : %s\n",postfix);
+               printf("postfix notation : %s\n",postfix);
                }
             pop();
          }
@@ -150,7 +150,8 @@ char * postfix(char * transformed)
 }
 void calculate(char *postfixed)
 {
-   //printf("%s\n", postfixed);
+   int array_i=0;
+   char *array=malloc(sizeof(char)*100);
    char *ptr = strtok(postfixed, " ");      // " " 공백 문자를 기준으로 문자열을 자름, 포인터 반환
 
    while(ptr != NULL){
@@ -162,7 +163,6 @@ void calculate(char *postfixed)
          }while(*ptr>='0'&&*ptr<='9');
 
          calPush(num);
-      
       }
       else{
          double num1=calPop();
@@ -171,25 +171,28 @@ void calculate(char *postfixed)
          switch(ptr[0]){
             case '*':
                calPush(num2*num1);
-               printf("check : %.2f\n", num2*num1);
+               printf("check : %.2f %s\n", num2*num1,ptr++);
                break;
             case '/':
                calPush(num2/num1);
-               printf("check : %.2f\n", num2/num1);
+               printf("check : %.2f %s\n", num2/num1,ptr++);
                break;
             case '+':
                calPush(num2+num1);
-               printf("check : %.2f \n", num2+num1);
+               printf("check : %.2f %s\n", num2+num1,ptr++);
                break;
             case '-':
                calPush(num2-num1);
-               printf("check : %.2f\n", num2-num1);
+               printf("check : %.2f %s\n", num2-num1,ptr++);
                break;
          }
       }
       ptr = strtok(NULL, " ");
    }
    printf("result : %f\n",calPop());
+}
+void print(){
+
 }
 char peek(){
    if(!isEmpty()){
